@@ -95,6 +95,11 @@ jobs:
           echo "=== List all files in bin/ ==="
           ls -la bin/ 2>/dev/null || echo "No files found in bin directory"
 
+          echo "=== daed / eBPF packages in manifest ==="
+          grep -iE "daed|kmod-sched|kmod-veth|xdp-socket|libbpf|^ca-bundle" bin/targets/airoha/an7581/*.manifest 2>/dev/null || echo "!! daed NOT FOUND in manifest !!"
+          echo "=== manifest package count ==="
+          wc -l bin/targets/airoha/an7581/*.manifest 2>/dev/null || true
+
       - name: Upload artifacts
         uses: actions/upload-artifact@v7
         with:
@@ -106,6 +111,7 @@ jobs:
             bin/targets/airoha/an7581/feeds.buildinfo
             bin/targets/airoha/an7581/version.buildinfo
             bin/targets/airoha/an7581/sha256sums
+            bin/targets/airoha/an7581/*.manifest
           retention-days: 30
         if: always()
 
@@ -145,5 +151,6 @@ jobs:
             bin/targets/airoha/an7581/feeds.buildinfo
             bin/targets/airoha/an7581/version.buildinfo
             bin/targets/airoha/an7581/sha256sums
+            bin/targets/airoha/an7581/*.manifest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
