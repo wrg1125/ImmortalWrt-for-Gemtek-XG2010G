@@ -1,0 +1,31 @@
+config interface 'loopback'
+	option device 'lo'
+	option proto 'static'
+	option ipaddr '127.0.0.1'
+	option netmask '255.0.0.0'
+
+config globals 'globals'
+	option ula_prefix 'fd2e:6c72:9f7e::/48'
+
+# LAN：lan2/lan3/lan4 桥接（1G ePHY）
+config device
+	option name 'br-lan'
+	option type 'bridge'
+	list ports 'lan2'
+	list ports 'lan3'
+	list ports 'lan4'
+
+config interface 'lan'
+	option device 'br-lan'
+	option proto 'static'
+	option ipaddr '10.0.0.1'
+	option netmask '255.255.255.0'
+	option ip6assign '60'
+
+# WAN：lan1（2.5G EN8811H）PPPoE 拨号
+config interface 'wan'
+	option device 'lan1'
+	option proto 'pppoe'
+	option username '057600382203'
+	option password '382203'
+	option ipv6 'auto'
